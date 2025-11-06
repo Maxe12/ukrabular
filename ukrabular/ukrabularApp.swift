@@ -7,11 +7,15 @@
 
 import SwiftUI
 
+// MARK: - App Entry
 @main
-struct ukrabularApp: App {
+struct UkrainianBuddyApp: App {
+    @StateObject private var store = WordStore()
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(store)
         }
     }
 }
