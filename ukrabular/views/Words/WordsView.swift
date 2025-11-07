@@ -13,33 +13,42 @@ struct WordListView: View {
 
     @State private var german = ""
     @State private var ukrainian = ""
+    @State private var showCreator = false
     
     var body: some View {
-        List {
-            ForEach(group.wordPairs) { pair in
-                VStack(alignment: .leading) {
-                    Text(pair.german).font(.headline)
-                    Text(pair.ukrainian).foregroundColor(.secondary)
+        NavigationView {
+            List {
+                ForEach(group.wordPairs) { pair in
+                    VStack(alignment: .leading) {
+                        Text(pair.ukrainian).font(.headline)
+                        Text(pair.german).foregroundColor(.secondary)
+                    }
                 }
             }
-            .onDelete(perform: deleteWord)
-        }
-        .navigationTitle(group.categoryName)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(action: addWord) {
-                    Image(systemName: "plus")
+            .navigationTitle(group.categoryName)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: { showCreator = true }) {
+                        Image(systemName: "plus")
+                    }
+                    .accessibilityLabel("Add word pair")
                 }
             }
         }
+        .sheet(isPresented: $showCreator) {
+             AddWordView(isPresented: $showCreator, group: group)
+                 .environmentObject(store)
+         }
     }
-    
-    private func addWord() {
-        // For now, a simple demo; ideally open a sheet to enter word
-        store.addWord(to: group.id, german: "Test", ukrainian: "Тест")
-    }
-    
-    private func deleteWord(at offsets: IndexSet) {
-        store.removeWord(from: group.id, at: offsets)
+}
+
+
+struct WordListView_Previews: PreviewProvider {
+    static var previews: some View {
+        let store = VocabularyStore()
+        let mockGroup = store.vocabularyGroups.first!
+        
+        WordListView(group: mockGroup)
+            .environmentObject(VocabularyStore())
     }
 }

@@ -46,45 +46,7 @@ struct CategorysView: View {
      AddWordView(isPresented: $showingAdd)
          .environmentObject(store)
  }
- 
-struct AddWordView: View {
-    @EnvironmentObject private var store: WordStore
-    @Binding var isPresented: Bool
 
-    @State private var category = ""
-    @State private var german = ""
-    @State private var ukrainian = ""
-
-    var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Group")) {
-                    TextField("e.g. Basics, Food, Travel", text: $category)
-                }
-                Section(header: Text("German")) {
-                    TextField("z. B. Haus", text: $german)
-                        .autocapitalization(.words)
-                }
-                Section(header: Text("Ukrainian")) {
-                    TextField("Наприклад: дім", text: $ukrainian)
-                        .autocapitalization(.words)
-                }
-            }
-            .navigationTitle("Add word pair")
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        store.add(german: german, ukrainian: ukrainian, category: category)
-                        isPresented = false
-                    }
-                }
-                ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { isPresented = false }
-                }
-            }
-        }
-    }
-}
 */
  
 struct CategorysView_Previews: PreviewProvider {
