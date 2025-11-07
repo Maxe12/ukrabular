@@ -10,7 +10,7 @@ import SwiftUI
 // MARK: - App Entry
 @main
 struct UkrainianBuddyApp: App {
-    @StateObject private var store = WordStore()
+    @StateObject private var store = VocabularyStore()
 
     var body: some Scene {
         WindowGroup {

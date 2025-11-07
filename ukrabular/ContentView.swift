@@ -5,7 +5,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            WordListView()
+            CategorysView()
                 .tabItem {
                     Label("Words", systemImage: "list.bullet")
                 }
@@ -21,6 +21,6 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-            .environmentObject(WordStore())
+            .environmentObject(VocabularyStore())
     }
 }

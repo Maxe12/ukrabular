@@ -7,26 +7,25 @@
 
 import SwiftUI
 
-struct WordListView: View {
-    @EnvironmentObject private var store: WordStore
+struct CategorysView: View {
+    @EnvironmentObject private var store: VocabularyStore
     @State private var showingAdd = false
 
     var body: some View {
         NavigationView {
             List {
-                ForEach(store.words) { word in
+                ForEach(store.vocabularyGroups) { group in
+                    NavigationLink(destination: WordListView(group: group)) {
                     VStack(alignment: .leading) {
-                        Text(word.german)
+                        Text(group.categoryName)
                             .font(.headline)
-                        Text(word.ukrainian)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+                        }
+                        .padding(.vertical, 4)
                     }
-                    .padding(.vertical, 4)
                 }
-                .onDelete(perform: store.remove)
+                .onDelete(perform: store.removeGroup)
             }
-            .navigationTitle("Word Pairs")
+            .navigationTitle("Kategorien")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: { showingAdd = true }) {
@@ -38,24 +37,30 @@ struct WordListView: View {
                     EditButton()
                 }
             }
-            .sheet(isPresented: $showingAdd) {
-                AddWordView(isPresented: $showingAdd)
-                    .environmentObject(store)
-            }
         }
     }
 }
 
+/*
+ .sheet(isPresented: $showingAdd) {
+     AddWordView(isPresented: $showingAdd)
+         .environmentObject(store)
+ }
+ 
 struct AddWordView: View {
     @EnvironmentObject private var store: WordStore
     @Binding var isPresented: Bool
 
+    @State private var category = ""
     @State private var german = ""
     @State private var ukrainian = ""
 
     var body: some View {
         NavigationView {
             Form {
+                Section(header: Text("Group")) {
+                    TextField("e.g. Basics, Food, Travel", text: $category)
+                }
                 Section(header: Text("German")) {
                     TextField("z. B. Haus", text: $german)
                         .autocapitalization(.words)
@@ -69,7 +74,7 @@ struct AddWordView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        store.add(german: german, ukrainian: ukrainian)
+                        store.add(german: german, ukrainian: ukrainian, category: category)
                         isPresented = false
                     }
                 }
@@ -80,10 +85,11 @@ struct AddWordView: View {
         }
     }
 }
-
-struct WordListView_Previews: PreviewProvider {
+*/
+ 
+struct CategorysView_Previews: PreviewProvider {
     static var previews: some View {
-        WordListView()
-            .environmentObject(WordStore())
+        CategorysView()
+            .environmentObject(VocabularyStore())
     }
 }

@@ -18,3 +18,15 @@ struct WordPair: Identifiable, Codable, Equatable {
         self.ukrainian = ukrainian
     }
 }
+
+struct VocabularyGroup: Identifiable, Codable, Equatable {
+    let id: UUID
+    var wordPairs: [WordPair]
+    var categoryName: String
+    
+    init(id: UUID = UUID(), wordPairs: [WordPair], categoryName: String) {
+        self.id = id
+        self.wordPairs = wordPairs
+        self.categoryName = categoryName
+    }
+}

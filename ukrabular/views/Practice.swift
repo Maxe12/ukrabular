@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct PracticeView: View {
-    @EnvironmentObject private var store: WordStore
+    @EnvironmentObject private var store: VocabularyStore
 
     @State private var direction: PracticeDirection = .ukToDe
     @State private var currentIndex = 0
@@ -100,7 +100,7 @@ struct PracticeView: View {
     }
 
     private func startPractice() {
-        practiceWords = store.words.shuffled()
+        practiceWords = store.vocabularyGroups.flatMap{$0.wordPairs}.shuffled()
         currentIndex = 0
         userAnswer = ""
         feedback = nil
@@ -161,6 +161,6 @@ enum PracticeDirection {
 struct PracticeView_Previews: PreviewProvider {
     static var previews: some View {
         PracticeView()
-            .environmentObject(WordStore())
+            .environmentObject(VocabularyStore())
     }
 }
