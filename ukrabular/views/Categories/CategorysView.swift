@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CategorysView: View {
     @EnvironmentObject private var store: VocabularyStore
-    @State private var showingAdd = false
+    @State private var showCreator = false
 
     var body: some View {
         NavigationView {
@@ -28,7 +28,7 @@ struct CategorysView: View {
             .navigationTitle("Kategorien")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { showingAdd = true }) {
+                    Button(action: { showCreator = true }) {
                         Image(systemName: "plus")
                     }
                     .accessibilityLabel("Add word pair")
@@ -38,16 +38,12 @@ struct CategorysView: View {
                 }
             }
         }
+        .sheet(isPresented: $showCreator) {
+             AddCategoryView(isPresented: $showCreator)
+                 .environmentObject(store)
+         }
     }
 }
-
-/*
- .sheet(isPresented: $showingAdd) {
-     AddWordView(isPresented: $showingAdd)
-         .environmentObject(store)
- }
-
-*/
  
 struct CategorysView_Previews: PreviewProvider {
     static var previews: some View {

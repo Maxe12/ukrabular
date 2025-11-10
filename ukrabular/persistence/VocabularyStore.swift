@@ -57,6 +57,21 @@ final class VocabularyStore: ObservableObject {
         }
     }
     
+    func editGroup(id: UUID, newName: String) {
+        vocabularyGroups = vocabularyGroups.map { group in
+            guard group.id == id else { return group }
+            return VocabularyGroup(id: id, wordPairs: group.wordPairs, categoryName: newName)
+        }
+    }
+    
+    func editWord(groupId: UUID, wordId: UUID, newGerman: String, newUkranian: String) {
+        guard let groupIndex = vocabularyGroups.firstIndex(where: { $0.id == groupId }) else { return }
+        vocabularyGroups[groupIndex].wordPairs = vocabularyGroups[groupIndex].wordPairs.map { pair in
+            guard pair.id == wordId else { return pair }
+            return WordPair(id: pair.id, german: newGerman, ukrainian: newUkranian)
+        }
+    }
+    
     func removeGroup(at offsets: IndexSet) {
         vocabularyGroups.remove(atOffsets: offsets)
     }
